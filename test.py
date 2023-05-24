@@ -168,8 +168,8 @@ if st.session_state['valid_flag']:
 
         merged_unmatched = pd.merge(null_df_unmatched, notnull_df_unmatched, on='index')
         merged_customer = pd.merge(null_df_customers, notnull_df_customers, on='index')
-        merged_unmatched1=merged_unmatched.melt('index',var_name='type',value_name='count')
-        merged_customer1=merged_customer.melt('index',var_name='type',value_name='count')
+        #merged_unmatched1=merged_unmatched.melt('index',var_name='type',value_name='count')
+        #merged_customer1=merged_customer.melt('index',var_name='type',value_name='count')
 
         unmatched_city_count = st.session_state.unmatched_df_com_cols.groupby(['STORE_CITY'])['STORE_CITY'].count().sort_values(ascending=False).reset_index(name='counts').head(10)
         customer_city_count = st.session_state.customer_df_com_cols.groupby(['STORE_CITY'])['STORE_CITY'].count().sort_values(ascending=False).reset_index(name='counts')#.head(10)
@@ -201,13 +201,13 @@ if st.session_state['valid_flag']:
         'count': '#0810A6',
         }
         #altair horizontal bar chart nulls and not nulls pink and blue 
-        na_unmatched=alt.Chart(merged_unmatched1).mark_bar(size=20).encode(
-            x=alt.X('count:Q', scale= alt.Scale(domainMax= len(st.session_state['unmatched_df_com_cols']) )),
-            y='type:N',  
-            color=alt.Color('type:N', scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
-            tooltip=['count'] ,
-            row=alt.Row('index:N', title=None)
-        ).properties(width=500 , height=alt.Step(25) ).configure_axis(title=None, grid=False)
+        #na_unmatched=alt.Chart(merged_unmatched1).mark_bar(size=20).encode(
+        #    x=alt.X('count:Q', scale= alt.Scale(domainMax= len(st.session_state['unmatched_df_com_cols']) )),
+        #    y='type:N',  
+        #    color=alt.Color('type:N', scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
+        #    tooltip=['count'] ,
+        #    row=alt.Row('index:N', title=None)
+        #).properties(width=500 , height=alt.Step(25) ).configure_axis(title=None, grid=False)
 
         #plotly gauge charts with number of not nulls
         fig = make_subplots(rows=2, cols=3, specs = [[{"type": "indicator"}] * 3] * 2 ) #specs=[[{"type": "indicator"} for c in df.columns] for t in df.index]
@@ -279,13 +279,13 @@ if st.session_state['valid_flag']:
             st.write('')
 
         #altair horizontal bar chart nulls and not nulls pink and blue 
-        na_customer=alt.Chart(merged_customer1).mark_bar(size=20).encode(
-            x=alt.X('count:Q', scale= alt.Scale(domainMax= len(st.session_state.customer_df_com_cols) )),
-            y='type:N',  
-            color=alt.Color('type:N', scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
-            tooltip=['count'] ,
-            row=alt.Row('index:N', title=None)
-        ).properties(width=500, height=alt.Step(25)).configure_axis(title=None, grid=False)
+        #na_customer=alt.Chart(merged_customer1).mark_bar(size=20).encode(
+        #    x=alt.X('count:Q', scale= alt.Scale(domainMax= len(st.session_state.customer_df_com_cols) )),
+        #    y='type:N',  
+        #    color=alt.Color('type:N', scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
+        #    tooltip=['count'] ,
+        #    row=alt.Row('index:N', title=None)
+        #).properties(width=500, height=alt.Step(25)).configure_axis(title=None, grid=False)
 
         #plotly gauge charts with number of not nulls
         fig2 = make_subplots(rows=2, cols=3, specs = [[{"type": "indicator"}] * 3] * 2 ) #specs=[[{"type": "indicator"} for c in df.columns] for t in df.index]
