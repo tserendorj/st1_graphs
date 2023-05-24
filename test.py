@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import altair as alt
 from PIL import Image
 from Front_end.front_end_functions import df_check_data
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
+#import plotly.graph_objects as go
+#from plotly.subplots import make_subplots
 
 # 1- Main Window -- Layout Settings------------------------------------------------------------
 st.set_page_config(layout="wide")
