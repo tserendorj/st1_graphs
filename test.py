@@ -210,16 +210,16 @@ if st.session_state['valid_flag']:
         #).properties(width=500 , height=alt.Step(25) ).configure_axis(title=None, grid=False)
 
         #plotly gauge charts with number of not nulls
-        fig = make_subplots(rows=2, cols=3, specs = [[{"type": "indicator"}] * 3] * 2 ) #specs=[[{"type": "indicator"} for c in df.columns] for t in df.index]
+        #fig = make_subplots(rows=2, cols=3, specs = [[{"type": "indicator"}] * 3] * 2 ) #specs=[[{"type": "indicator"} for c in df.columns] for t in df.index]
 
-        for r, row in notnull_df_unmatched.iterrows():
-                variable = row['index']
-                value = row['count']
+        #for r, row in notnull_df_unmatched.iterrows():
+        #        variable = row['index']
+        #        value = row['count']
     
-                fig.add_trace(
-                    go.Indicator(mode="gauge+number", value=value, gauge = {'axis': {'range': [None, len(st.session_state['unmatched_df_com_cols'])]},'bar': {'color': "#0810A6"},}, title={"text": f"{variable}"}), row=r // 3 + 1, col=r % 3 + 1 )
+        #       fig.add_trace(
+        #            go.Indicator(mode="gauge+number", value=value, gauge = {'axis': {'range': [None, len(st.session_state['unmatched_df_com_cols'])]},'bar': {'color': "#0810A6"},}, title={"text": f"{variable}"}), row=r // 3 + 1, col=r % 3 + 1 )
 
-        fig.update_layout(margin={"l": 20, "r": 20, "t": 40, "b": 20} , height=500, width=900, title_text="Unmatched Charts")
+        #fig.update_layout(margin={"l": 20, "r": 20, "t": 40, "b": 20} , height=500, width=900, title_text="Unmatched Charts")
 
         #Radial chart with Store_city and its count
         base = alt.Chart(unmatched_city_count).encode(
@@ -288,16 +288,16 @@ if st.session_state['valid_flag']:
         #).properties(width=500, height=alt.Step(25)).configure_axis(title=None, grid=False)
 
         #plotly gauge charts with number of not nulls
-        fig2 = make_subplots(rows=2, cols=3, specs = [[{"type": "indicator"}] * 3] * 2 ) #specs=[[{"type": "indicator"} for c in df.columns] for t in df.index]
+        #fig2 = make_subplots(rows=2, cols=3, specs = [[{"type": "indicator"}] * 3] * 2 ) #specs=[[{"type": "indicator"} for c in df.columns] for t in df.index]
 
-        for r, row in notnull_df_customers.iterrows():
-                variable = row['index']
-                value = row['count']
+        #for r, row in notnull_df_customers.iterrows():
+        #        variable = row['index']
+        #        value = row['count']
     
-                fig2.add_trace(
-                    go.Indicator(mode="gauge+number", value=value, gauge = {'axis': {'range': [None, len(st.session_state['customer_df_com_cols'])]},'bar': {'color': "#0810A6"},}, title={"text": f"{variable}"}), row=r // 3 + 1, col=r % 3 + 1 )
+        #       fig2.add_trace(
+        #            go.Indicator(mode="gauge+number", value=value, gauge = {'axis': {'range': [None, len(st.session_state['customer_df_com_cols'])]},'bar': {'color': "#0810A6"},}, title={"text": f"{variable}"}), row=r // 3 + 1, col=r % 3 + 1 )
 
-        fig2.update_layout(margin={"l": 20, "r": 20, "t": 40, "b": 20} , height=500, width=900, title_text="Customer Charts")
+        #fig2.update_layout(margin={"l": 20, "r": 20, "t": 40, "b": 20} , height=500, width=900, title_text="Customer Charts")
 
         #Radial chart with Store_city and its count
         base_c = alt.Chart(final_customer_city_count).encode(
