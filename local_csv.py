@@ -615,8 +615,8 @@ if st.session_state['valid_flag']:
 
         merged_unmatched = pd.merge(null_df_unmatched, notnull_df_unmatched, on='index')
         merged_customer = pd.merge(null_df_customers, notnull_df_customers, on='index')
-        merged_unmatched1=merged_unmatched.melt('index',var_name='type',value_name='count')
-        merged_customer1=merged_customer.melt('index',var_name='type',value_name='count')
+        #merged_unmatched1=merged_unmatched.melt('index',var_name='type',value_name='count')
+        #merged_customer1=merged_customer.melt('index',var_name='type',value_name='count')
 
         unmatched_city_count = st.session_state.unmatched_df_com_cols.groupby(['STORE_CITY'])['STORE_CITY'].count().sort_values(ascending=False).reset_index(name='counts').head(10)
         customer_city_count = st.session_state.customer_df_com_cols.groupby(['STORE_CITY'])['STORE_CITY'].count().sort_values(ascending=False).reset_index(name='counts')#.head(10)
@@ -625,8 +625,8 @@ if st.session_state['valid_flag']:
         # Create final DataFrame B with selected columns
         final_customer_city_count = merged_df[['STORE_CITY', 'counts_y']].rename(columns={'counts_y': 'counts'})
         
-        merged_df_un = pd.merge(st.session_state.unmatched_df_com_cols, unmatched_city_count, on='STORE_CITY', how='inner')
-        merged_df_cu = pd.merge(st.session_state.customer_df_com_cols, final_customer_city_count, on='STORE_CITY', how='inner')
+        #merged_df_un = pd.merge(st.session_state.unmatched_df_com_cols, unmatched_city_count, on='STORE_CITY', how='inner')
+        #merged_df_cu = pd.merge(st.session_state.customer_df_com_cols, final_customer_city_count, on='STORE_CITY', how='inner')
         
         ctomer_name_col = st.session_state.customer_df_com_cols.MSRNAME
         customer_unique = pd.DataFrame({"labels" : ['Known unique customers', 'Duplicates'],"values":[ctomer_name_col.nunique(), len(ctomer_name_col) - ctomer_name_col.nunique()]})
