@@ -641,13 +641,13 @@ if st.session_state['valid_flag']:
         'Duplicates': '#BF2A7C',
     }
         
-        na_unmatched=alt.Chart(merged_unmatched1).mark_bar(size=20).encode(
-            x=alt.X('count:Q', scale= alt.Scale(domainMax= len(st.session_state['unmatched_df_com_cols']) )),
-            y='type:N',  
-            color=alt.Color('type:N', scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
-            tooltip=['count'] ,
-            row=alt.Row('index:N', title=None)
-        ).properties(width=500 , height=alt.Step(25) ).configure_axis(title=None, grid=False)
+        #na_unmatched=alt.Chart(merged_unmatched1).mark_bar(size=20).encode(
+        #    x=alt.X('count:Q', scale= alt.Scale(domainMax= len(st.session_state['unmatched_df_com_cols']) )),
+        #    y='type:N',  
+        #    color=alt.Color('type:N', scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
+        #    tooltip=['count'] ,
+        #    row=alt.Row('index:N', title=None)
+        #).properties(width=500 , height=alt.Step(25) ).configure_axis(title=None, grid=False)
 
         #Radial chart with Store_city and its count
         base = alt.Chart(unmatched_city_count, title="Top 10 store cities by count").encode(
@@ -692,13 +692,13 @@ if st.session_state['valid_flag']:
             st.write('')
 
         #na_customer = na_graphs(null_df_customers, name='customer')
-        na_customer=alt.Chart(merged_customer1).mark_bar(size=20).encode(
-            x=alt.X('count:Q', scale= alt.Scale(domainMax= len(st.session_state.customer_df_com_cols) )),
-            y='type:N',  
-            color=alt.Color('type:N', scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
-            tooltip=['count'] ,
-            row=alt.Row('index:N', title=None)
-        ).properties(width=500, height=alt.Step(25)).configure_axis(title=None, grid=False)
+        #na_customer=alt.Chart(merged_customer1).mark_bar(size=20).encode(
+        #    x=alt.X('count:Q', scale= alt.Scale(domainMax= len(st.session_state.customer_df_com_cols) )),
+        #    y='type:N',  
+        #    color=alt.Color('type:N', scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
+        #    tooltip=['count'] ,
+        #    row=alt.Row('index:N', title=None)
+        #).properties(width=500, height=alt.Step(25)).configure_axis(title=None, grid=False)
 
         #Radial chart with Store_city and its count
         base_c = alt.Chart(final_customer_city_count, title='Store cities by count , based on unmatched data set').encode(
