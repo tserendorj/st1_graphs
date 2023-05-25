@@ -466,9 +466,19 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
         col5.pyplot(elbow_chart)
 
         #Display best_threshold_df table
-        styler = best_threshold_df.style.hide_index()
-        col5.write(styler.to_html(), unsafe_allow_html=True) 
-
+        #styler = best_threshold_df.style.hide_index()
+        #col5.write(styler.to_html(), unsafe_allow_html=True) 
+        hide_table_row_index = """
+            <style>
+            thead tr th:first-child {display:none}
+            tbody th {display:none}
+            </style>
+            """
+        # Inject CSS with Markdown
+        st.markdown(hide_table_row_index, unsafe_allow_html=True)
+        # Display a static table
+        col5.table(best_threshold_df)
+        
         # /....
         # Calculations to display Match Venn Graph
         match_count = np.round(match_dict[selectbox_threshold], 1)
