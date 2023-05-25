@@ -329,7 +329,16 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
             if 'STORE_ZIP' in col.lower():
                 clean_zip(unmatched_df, col='STORE_ZIP')
                 
-                
+         #Cleaning bad names
+        values_to_remove = ["DISCOVER CARDMEMBER", "CHASE VISA CARDHOLDER", "VALUE LINK CTS", "VISA CARDHOLDER", "VALUED CUSTOMER"]
+        # Create a boolean mask indicating rows to keep
+        mask_un = ~unmatched_df['MSRNAME'].isin(values_to_remove)
+        # Apply the mask to the DataFrame
+        unmatched_df = unmatched_df[mask_un]       
+        # Create a boolean mask indicating rows to keep
+        mask_cu = ~customer_df['MSRNAME'].isin(values_to_remove)
+        # Apply the mask to the DataFrame
+        customer_df = customer_df[mask_cu]       
 
 
         ## REMOVE NaNs FROM SELECTED COLS TO JOIN ON
