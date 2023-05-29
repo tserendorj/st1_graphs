@@ -43,7 +43,7 @@ position: fixed;left: 0;bottom: 0;width: 100%;background-color: white;color: bla
 }
 </style>
 <div class="footer">
-<p>(c) 2023 Zeta Global, Dev Version 1.1, GDSA</p>
+<p>(c) 2023 Zeta Global, Dev Version 1.3, GDSA</p>
 </div>
 """
 st.markdown(footer,unsafe_allow_html=True)
@@ -618,7 +618,7 @@ if st.session_state['valid_flag']:
         df_info = {'Number of rows':[len(st.session_state['unmatched_df_com_cols']), len(st.session_state.customer_df_com_cols)],
                     'Number of columns': [len(st.session_state['unmatched_df_com_cols'].columns), len(st.session_state.customer_df_com_cols.columns)]}
         df_info = pd.DataFrame(df_info).transpose().rename(columns={0:'Unmatch Data', 1:'Customer Data'})
-        col_space1.dataframe(df_info)
+        #col_space1.dataframe(df_info)
 
         ## NA charts
         null_df_unmatched = st.session_state['unmatched_df_com_cols'].apply(lambda x: sum(x.isnull())).to_frame(name='count_null').reset_index()
