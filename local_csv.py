@@ -741,7 +741,8 @@ if st.session_state['valid_flag']:
         #Mini pie chart 1
         base1 = alt.Chart(unmatched_unique).encode(
         theta= alt.Theta("values:Q",stack=True),
-        color = alt.Color('labels:N' ,title=None)#, scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
+#         color = alt.Color('labels:N' ,title=None)#, scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
+        color = alt.Color('labels:N' ,title=None)#,scale=alt.Scale(scheme="plasma")) ,
         )
 
         pie = base1.mark_arc(outerRadius=120)
@@ -796,7 +797,8 @@ if st.session_state['valid_flag']:
         #Mini pie chart 2
         base_2 = alt.Chart(customer_unique).encode(
         theta= alt.Theta("values:Q", stack=True),
-        color= alt.Color('labels:N',title=None)#,scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
+#         color= alt.Color('labels:N',title=None)#,scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
+        color= alt.Color('labels:N',title=None)#,,scale=alt.Scale(scheme="plasma")) ,
         )
 
         pie_2 = base_2.mark_arc(outerRadius=120)
