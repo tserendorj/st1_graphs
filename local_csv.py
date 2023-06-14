@@ -109,8 +109,30 @@ if 'unmatched_df_com_cols' not in st.session_state:
 if 'customer_df_com_cols' not in st.session_state:
     st.session_state.customer_df_com_cols = pd.DataFrame()
 
+if 'unmatched_df_view' not in st.session_state:
+    st.session_state.unmatched_df_view = pd.DataFrame()
+if 'customer_df_view' not in st.session_state:
+    st.session_state.customer_df_view = pd.DataFrame()
+
 if check_data:
     if (unmatched_file_valid_flag == True) and (customer_file_valid_flag ==True):
+
+        unmatched_df_view = unmatched_df.copy()
+        unmatched_df_view['STORE'] = unmatched_df_view['STORE'].round(0).astype(str).str[:-2]
+        unmatched_df_view['STORE'] = unmatched_df_view['STORE'].replace('n', np.nan)
+        unmatched_df_view['STORE_ZIP'] = unmatched_df_view['STORE_ZIP'].round(0).astype(str).str[:-2]
+        unmatched_df_view['STORE_ZIP'] = unmatched_df_view['STORE_ZIP'].replace('n', np.nan)
+        unmatched_df_view['NUM_SHOP'] = unmatched_df_view['NUM_SHOP'].round(0).astype(str).str[:-2]
+        unmatched_df_view['NUM_SHOP'] = unmatched_df_view['NUM_SHOP'].replace('n', np.nan)
+        
+
+        customer_df_view = customer_df.copy()
+        customer_df_view['STORE'] = customer_df_view['STORE'].round(0).astype(str).str[:-2]
+        customer_df_view['STORE'] = customer_df_view['STORE'].replace('n', np.nan)
+        customer_df_view['STORE_ZIP'] = customer_df_view['STORE_ZIP'].round(0).astype(str).str[:-2]
+        customer_df_view['STORE_ZIP'] = customer_df_view['STORE_ZIP'].replace('n', np.nan)
+        customer_df_view['NUM_SHOP'] = customer_df_view['NUM_SHOP'].round(0).astype(str).str[:-2]
+        customer_df_view['NUM_SHOP'] = customer_df_view['NUM_SHOP'].replace('n', np.nan)    
 
         unmatched_df, customer_df, unmatched_obj_cols, unmatched_num_cols, unmatched_obj_cols_optional, commun_cols_u_c= df_check_data(unmatched_df, customer_df)
     
@@ -120,6 +142,12 @@ if check_data:
         st.session_state.unmatched_obj_cols_optional = unmatched_obj_cols_optional
         st.session_state.unmatched_df_com_cols = unmatched_df[commun_cols_u_c]
         st.session_state.customer_df_com_cols = customer_df[commun_cols_u_c]
+
+        st.session_state.unmatched_df_view = unmatched_df_view[commun_cols_u_c]
+        st.session_state.customer_df_view = customer_df_view[commun_cols_u_c]
+
+
+
 
     else:
         pass
@@ -438,6 +466,14 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
                                                     f'{select_box_unmatched_load_11}_UNMTCH',
                                                     f'{select_box_unmatched_load_12}_MTCH',  
                                                     f'{select_box_unmatched_load_12}_UNMTCH']]
+            algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'].replace('n', np.nan)
+            algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'].replace('n', np.nan)
+            algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'].replace('n', np.nan)
+            algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'].replace('n', np.nan)                                          
 
         elif select_box_unmatched_load_main and select_box_unmatched_load_11:
             algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_MTCH', 
@@ -445,11 +481,21 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
                                                     f'{select_box_unmatched_load_11}_MTCH', 
                                                     f'{select_box_unmatched_load_11}_UNMTCH']]
 
+            algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'].replace('n', np.nan)
+            algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'].replace('n', np.nan)
+
         elif select_box_unmatched_load_main and select_box_unmatched_load_12:
             algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_MTCH', 
                                                     f'{select_box_unmatched_load_main}_UNMTCH', 
                                                     f'{select_box_unmatched_load_12}_MTCH', 
                                                     f'{select_box_unmatched_load_12}_UNMTCH']]
+            
+            algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'].replace('n', np.nan)
+            algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'].replace('n', np.nan)
 
         elif select_box_unmatched_load_main:
             algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_MTCH', 
@@ -578,17 +624,23 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
         with colp3:
             st.write('')
 
-        st.dataframe(data=algrtm_output_df.head(100), width=None, height=None)
+        st.subheader('Dataset Matched Summary Table​')
+        st.dataframe(data=algrtm_output_df.head(100), use_container_width=True)
 
         st.subheader('Store Performance​')
 
         #----- Col 7 and Col 8--------
         col7, col8 = st.columns([2, 2])
-        store_table_title = '<p style="font-family:sans-serif;color:#30343F; font-size: 19px; text-align: left;">Store Statistics Table</p>'
-        col7.markdown(store_table_title, unsafe_allow_html=True)
-        violin_chart_title = '<p style="font-family:sans-serif;color:#30343F; font-size: 19px; text-align: left;">Store Statistics Distribution</p>'
-        col8.markdown(violin_chart_title, unsafe_allow_html=True)
-        #col8.write("Store Statistics Distribution")
+        #store_table_title = '<p style="font-family:sans-serif;color:#30343F; font-size: 19px; text-align: left;">Store Statistics Table</p>'
+        #col7.markdown(store_table_title, unsafe_allow_html=True)
+        col7.subheader('Store Statistics Table')
+        #violin_chart_title = '<p style="font-family:sans-serif;color:#30343F; font-size: 19px; text-align: left;">Store Statistics Distribution</p>'
+        #col8.markdown(violin_chart_title, unsafe_allow_html=True)
+        col8.subheader("Store Statistics Distribution")
+
+        df_gb_store_mtch['STORE'] = df_gb_store_mtch['STORE'].round(0).astype(str).str[:-2]
+        df_gb_store_mtch['STORE'] = df_gb_store_mtch['STORE'].replace('n', np.nan)
+
         col7.dataframe(data=df_gb_store_mtch)
 
         # /....
@@ -638,15 +690,16 @@ if st.session_state['valid_flag']:
         #merged_customer1=merged_customer.melt('index',var_name='type',value_name='count')
 
         unmatched_city_count = st.session_state.unmatched_df_com_cols.groupby(['STORE_CITY'])['STORE_CITY'].count().sort_values(ascending=False).reset_index(name='counts').head(10)
-        customer_city_count = st.session_state.customer_df_com_cols.groupby(['STORE_CITY'])['STORE_CITY'].count().sort_values(ascending=False).reset_index(name='counts')#.head(10)
+        customer_city_count = st.session_state.customer_df_com_cols.groupby(['STORE_CITY'])['STORE_CITY'].count().sort_values(ascending=False).reset_index(name='counts').head(10)
         # Merge DataFrame A and DataFrame B on 'city_store' column
         merged_df = pd.merge(unmatched_city_count, customer_city_count, on='STORE_CITY')
         # Create final DataFrame B with selected columns
         final_customer_city_count = merged_df[['STORE_CITY', 'counts_y']].rename(columns={'counts_y': 'counts'})
         
         merged_df_un = pd.merge(st.session_state.unmatched_df_com_cols, unmatched_city_count, on='STORE_CITY', how='inner')
-        merged_df_cu = pd.merge(st.session_state.customer_df_com_cols, final_customer_city_count, on='STORE_CITY', how='inner')
-        
+        #merged_df_cu = pd.merge(st.session_state.customer_df_com_cols, final_customer_city_count, on='STORE_CITY', how='inner')
+        merged_df_cu = pd.merge(st.session_state.customer_df_com_cols, customer_city_count, on='STORE_CITY', how='inner')
+
         ctomer_name_col = st.session_state.customer_df_com_cols.MSRNAME
         customer_unique = pd.DataFrame({"labels" : ['Known unique customers', 'Duplicates'],"values":[ctomer_name_col.nunique(), len(ctomer_name_col) - ctomer_name_col.nunique()]})
 
@@ -682,13 +735,13 @@ if st.session_state['valid_flag']:
         bars = alt.Chart(merged_df_un.dropna(), title="Distribution of num_shop by top 10 cities").mark_bar().encode(
         x=alt.X('count()', stack='zero',title=None),
         y=alt.Y('STORE_CITY:N',title=None),
-        color=alt.Color('NUM_SHOP:N', bin=alt.Bin(maxbins=5), scale=alt.Scale(scheme='plasma'))
+        color=alt.Color('NUM_SHOP:N', bin=alt.Bin(maxbins=5))#, scale=alt.Scale(scheme='plasma'))
             )
         
         #Mini pie chart 1
         base1 = alt.Chart(unmatched_unique).encode(
         theta= alt.Theta("values:Q",stack=True),
-        color = alt.Color('labels:N' ,title=None, scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
+        color = alt.Color('labels:N' ,title=None)#, scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
         )
 
         pie = base1.mark_arc(outerRadius=120)
@@ -720,7 +773,7 @@ if st.session_state['valid_flag']:
         #).properties(width=500, height=alt.Step(25)).configure_axis(title=None, grid=False)
 
         #Radial chart with Store_city and its count
-        base_c = alt.Chart(final_customer_city_count, title='Store cities by count , based on unmatched data set').encode(
+        base_c = alt.Chart(customer_city_count, title='Top 10 store cities by count').encode(
         theta=alt.Theta("counts:Q", stack=True ),
         radius=alt.Radius("counts", scale=alt.Scale(type="sqrt", zero=True, rangeMin=20)),
         color=alt.Color ("STORE_CITY:N" ,title="Cities"),
@@ -734,16 +787,16 @@ if st.session_state['valid_flag']:
         'Duplicates':  '#BF2A7C',
     }
         #Stack bar with city, Numshop
-        bars_2 = alt.Chart(merged_df_cu.dropna(), title="Distribution of num_shop by cities").mark_bar().encode(
+        bars_2 = alt.Chart(merged_df_cu.dropna(), title="Distribution of num_shop by top 10 cities").mark_bar().encode(
         x=alt.X('count()', stack='zero',title=None),
         y=alt.Y('STORE_CITY:N',title=None),
-        color=alt.Color('NUM_SHOP:N', bin=alt.Bin(maxbins=5), scale=alt.Scale(scheme='plasma'))
+        color=alt.Color('NUM_SHOP:N', bin=alt.Bin(maxbins=5))#, scale=alt.Scale(scheme='plasma'))
             )
         
         #Mini pie chart 2
         base_2 = alt.Chart(customer_unique).encode(
         theta= alt.Theta("values:Q", stack=True),
-        color= alt.Color('labels:N',title=None,scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
+        color= alt.Color('labels:N',title=None)#,scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
         )
 
         pie_2 = base_2.mark_arc(outerRadius=120)
@@ -785,10 +838,12 @@ if st.session_state['valid_flag']:
         col_left_expander.write('Unmatched data')
         with col_left_expander.expander("Expand data and statistics"):
             #Display unmatch df
-            st.dataframe(st.session_state['unmatched_df_com_cols'].head(100))
+            
+            st.dataframe(st.session_state.unmatched_df_view.head(100))
+            #st.dataframe(st.session_state['unmatched_df_com_cols'].head(100))
             #Display unmatch df NAs 
             st.write(f'Number of Nan values in Unmatched Dataset: ')
-            na_unmt_df = pd.DataFrame(st.session_state['unmatched_df_com_cols'].isna().sum())
+            na_unmt_df = pd.DataFrame(st.session_state.unmatched_df_view.isna().sum())
             na_unmt_df = na_unmt_df.rename(columns={0:'#NAs'})
             st.dataframe(na_unmt_df)
         
@@ -799,10 +854,11 @@ if st.session_state['valid_flag']:
         col_right_expander.write(f'Customer data')
         with col_right_expander.expander("Expand data and statistics"):
             #Display customer df
-            st.dataframe(st.session_state.customer_df_com_cols.head(100))
+            st.dataframe(st.session_state.customer_df_view.head(100))
+            #st.dataframe(st.session_state.customer_df_com_cols.head(100))
             #Display unmatch df NAs 
             st.write(f'Number of Nan values in Customer Data: ')
-            na_cust_df = pd.DataFrame(st.session_state.customer_df_com_cols.isna().sum())
+            na_cust_df = pd.DataFrame(st.session_state.customer_df_view.isna().sum())
             na_cust_df = na_cust_df.rename(columns={0:'#NAs'})
             st.dataframe(na_cust_df)
         if len(na_cust_df[na_cust_df['#NAs']>0]) == 0:
@@ -815,7 +871,8 @@ if st.session_state['valid_flag']:
         col_left_expander.write('Unmatched data')
         with col_left_expander.expander("Expand data and statistics"):
             #Display unmatch df
-            st.dataframe(st.session_state['unmatched_df_com_cols'].head(100))
+            #st.dataframe(unmatched_df[commun_cols_u_c].head(100))
+            #st.dataframe(st.session_state['unmatched_df_com_cols'].head(100))
             #Display unmatch df NAs 
             st.write(f'Number of Nan values in Unmatched Dataset: ')
             na_unmt_df = pd.DataFrame(st.session_state['unmatched_df_com_cols'].isna().sum())
@@ -828,7 +885,8 @@ if st.session_state['valid_flag']:
         col_right_expander.write(f'Customer data')
         with col_right_expander.expander("Expand data and statistics"):
             #Display customer df
-            st.dataframe(st.session_state.customer_df_com_cols.head(100))
+            #st.dataframe(customer_df[commun_cols_u_c].head(100))
+            #st.dataframe(st.session_state.customer_df_com_cols.head(100))
             #Display unmatch df NAs 
             st.write(f'Number of Nan values in Customer Data: ')
             na_cust_df = pd.DataFrame(st.session_state.customer_df_com_cols.isna().sum())
