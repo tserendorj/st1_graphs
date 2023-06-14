@@ -735,7 +735,7 @@ if st.session_state['valid_flag']:
         bars = alt.Chart(merged_df_un.dropna(), title="Distribution of num_shop by top 10 cities").mark_bar().encode(
         x=alt.X('count()', stack='zero',title=None),
         y=alt.Y('STORE_CITY:N',title=None),
-        color=alt.Color('NUM_SHOP:N', bin=alt.Bin(maxbins=5))#, scale=alt.Scale(scheme='plasma'))
+        color=alt.Color('NUM_SHOP:N', bin=alt.Bin(maxbins=5), scale=alt.Scale(scheme='plasma'))
             )
         
         #Mini pie chart 1
@@ -791,7 +791,7 @@ if st.session_state['valid_flag']:
         bars_2 = alt.Chart(merged_df_cu.dropna(), title="Distribution of num_shop by top 10 cities").mark_bar().encode(
         x=alt.X('count()', stack='zero',title=None),
         y=alt.Y('STORE_CITY:N',title=None),
-        color=alt.Color('NUM_SHOP:N', bin=alt.Bin(maxbins=5))#, scale=alt.Scale(scheme='plasma'))
+        color=alt.Color('NUM_SHOP:N', bin=alt.Bin(maxbins=5), scale=alt.Scale(scheme='plasma'))
             )
         
         #Mini pie chart 2
