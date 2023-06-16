@@ -49,7 +49,7 @@ position: fixed;left: 0;bottom: 0;width: 100%;background-color: white;color: bla
 st.markdown(footer,unsafe_allow_html=True)
 
 #List of possible tresholds used in the algorithm
-chosen_tresholds = ('0.5', '0.6', '0.75','0.85','0.95','0.97','0.99')
+chosen_tresholds = ('0.50', '0.60', '0.75','0.85','0.95','0.97','0.99')
 
 
 # -----------------------------------------------------------------------------------------------
