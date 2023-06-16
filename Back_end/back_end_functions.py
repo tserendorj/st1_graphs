@@ -101,7 +101,7 @@ def merge_dataframes(predictions, unmatched_df, customer_df):
     data_indexes=data_indexes["ID_1	ID_2".split("\t")]
     df_v1=data_indexes.merge(unmatched_df,left_on="ID_1",right_on="ID")
     df_v2=data_indexes.merge(customer_df,left_on="ID_2",right_on="ID")
-    df_final = df_v1.merge(df_v2,on=["ID_1","ID_2"],how="left",suffixes=('_MTCH', '_UNMTCH'))
+    df_final = df_v1.merge(df_v2,on=["ID_1","ID_2"],how="left",suffixes=('_CUST', '_UNMTCH'))
     # drop duplicate id
     df_final.drop(["ID_1", "ID_2"],axis=1,inplace=True)
     #drop duplicates
@@ -143,7 +143,7 @@ def elbow_function(df,
     plt.ylabel("# Matches", color=textColor, rotation='vertical', loc ='center', fontsize =10)
     plt.ylim(((min(df[y_num_match])-50),(max(df[y_num_match])+50)))
     # Giving title to the plotTotal customers 100% match
-    plt.title("Number Matched Records per Threshold", color=textColor, fontsize =12)
+    plt.title("Number of Matched Records per Threshold", color=textColor, fontsize =10)
     
     # Add cosmetics
     ax.spines['bottom'].set_color('lightgrey')

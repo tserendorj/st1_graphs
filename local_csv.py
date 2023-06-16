@@ -43,7 +43,7 @@ position: fixed;left: 0;bottom: 0;width: 100%;background-color: white;color: bla
 }
 </style>
 <div class="footer">
-<p>(c) 2023 Zeta Global, Dev Version 1.3, GDSA</p>
+<p>(c) 2023 Zeta Global, Dev Version 1.4, GDSA</p>
 </div>
 """
 st.markdown(footer,unsafe_allow_html=True)
@@ -59,7 +59,9 @@ chosen_tresholds = ('0.5', '0.6', '0.75','0.85','0.95','0.97','0.99')
 # Input Data 
 st.sidebar.title("Input Data")
 
+file_options = ['Local file', 'Snowflake']
 
+file = st.sidebar.radio('Data upload', file_options)
 
 ## Unmatched file: this are unknown customers 
 unmatched_file = st.sidebar.file_uploader('Unmatched Dataset', type='csv', help='Dataset without email address')
@@ -195,7 +197,7 @@ if (unmatched_file_valid_flag == True) and (customer_file_valid_flag ==True):
     if x > 0:
         st.sidebar.markdown(f'<h1 style="color:{tertiaryColor};font-size:16px;">{f"The operation will take {datetime.timedelta(seconds=x)}"}</h1>', unsafe_allow_html=True)
     else:
-        st.sidebar.markdown(f'<h1 style="color:{tertiaryColor};font-size:16px;">{f"The operation will take less than a minute"}</h1>', unsafe_allow_html=True)
+        st.sidebar.markdown(f'<h1 style="color:{tertiaryColor};font-size:16px;">{f"The operation will take few hours"}</h1>', unsafe_allow_html=True)
     
 
 
@@ -271,10 +273,24 @@ else:
     st.sidebar.write(' ')
 
 ## Apply Match button
-st.sidebar.title("Match data")
+st.sidebar.title("Match Data")
 match_button = st.sidebar.button("""Apply Match""", help='Apply match to your data and show the results')
 
 st.sidebar.text(" ")
+
+st.sidebar.title("Data Storage")
+if 'dataframe_csv' not in st.session_state:
+    st.session_state.dataframe_csv = pd.DataFrame()
+csv=st.session_state.dataframe_csv.to_csv().encode('utf-8')
+today = datetime.date.today()
+today_date = today.strftime('%m%d%Y%H%M%S')
+csv_name='prob_matching_df_' + today_date
+st.sidebar.download_button(
+    label="Download data as CSV",
+    data=csv,
+    file_name=csv_name,
+    mime='text/csv',
+    )
 
 
 # -----------------------------------------------------------------------------------------------
@@ -294,6 +310,7 @@ col2.image(zeta_logo)
 ## Header
 col1.title("Zeta Customer Matcher")
 """This app demonstrates Customers Probabilistic Matching Project"""
+
 
 # Creating columns 3 and 4
 col_space1, col_space2  =  st.columns([2,2])
@@ -460,45 +477,45 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
         algrtm_output_df = df_final.copy()
         
         if select_box_unmatched_load_main and select_box_unmatched_load_11 and select_box_unmatched_load_12:     
-            algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_MTCH', 
+            algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_CUST', 
                                                     f'{select_box_unmatched_load_main}_UNMTCH', 
-                                                    f'{select_box_unmatched_load_11}_MTCH', 
+                                                    f'{select_box_unmatched_load_11}_CUST', 
                                                     f'{select_box_unmatched_load_11}_UNMTCH',
-                                                    f'{select_box_unmatched_load_12}_MTCH',  
+                                                    f'{select_box_unmatched_load_12}_CUST',  
                                                     f'{select_box_unmatched_load_12}_UNMTCH']]
-            algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'].round(0).astype(str).str[:-2]
-            algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'].replace('n', np.nan)
-            algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'].round(0).astype(str).str[:-2]
-            algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'].replace('n', np.nan)
+            algrtm_output_df[f'{select_box_unmatched_load_11}_CUST'] = algrtm_output_df[f'{select_box_unmatched_load_11}_CUST'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_11}_CUST'] = algrtm_output_df[f'{select_box_unmatched_load_11}_CUST'].replace('n', np.nan)
+            algrtm_output_df[f'{select_box_unmatched_load_12}_CUST'] = algrtm_output_df[f'{select_box_unmatched_load_12}_CUST'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_12}_CUST'] = algrtm_output_df[f'{select_box_unmatched_load_12}_CUST'].replace('n', np.nan)
             algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'].round(0).astype(str).str[:-2]
             algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'].replace('n', np.nan)
             algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'].round(0).astype(str).str[:-2]
             algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'].replace('n', np.nan)                                          
 
         elif select_box_unmatched_load_main and select_box_unmatched_load_11:
-            algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_MTCH', 
+            algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_CUST', 
                                                     f'{select_box_unmatched_load_main}_UNMTCH', 
-                                                    f'{select_box_unmatched_load_11}_MTCH', 
+                                                    f'{select_box_unmatched_load_11}_CUST', 
                                                     f'{select_box_unmatched_load_11}_UNMTCH']]
 
-            algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'].round(0).astype(str).str[:-2]
-            algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_MTCH'].replace('n', np.nan)
+            algrtm_output_df[f'{select_box_unmatched_load_11}_CUST'] = algrtm_output_df[f'{select_box_unmatched_load_11}_CUST'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_11}_CUST'] = algrtm_output_df[f'{select_box_unmatched_load_11}_CUST'].replace('n', np.nan)
             algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'].round(0).astype(str).str[:-2]
             algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_11}_UNMTCH'].replace('n', np.nan)
 
         elif select_box_unmatched_load_main and select_box_unmatched_load_12:
-            algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_MTCH', 
+            algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_CUST', 
                                                     f'{select_box_unmatched_load_main}_UNMTCH', 
-                                                    f'{select_box_unmatched_load_12}_MTCH', 
+                                                    f'{select_box_unmatched_load_12}_CUST', 
                                                     f'{select_box_unmatched_load_12}_UNMTCH']]
             
-            algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'].round(0).astype(str).str[:-2]
-            algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_MTCH'].replace('n', np.nan)
+            algrtm_output_df[f'{select_box_unmatched_load_12}_CUST'] = algrtm_output_df[f'{select_box_unmatched_load_12}_CUST'].round(0).astype(str).str[:-2]
+            algrtm_output_df[f'{select_box_unmatched_load_12}_CUST'] = algrtm_output_df[f'{select_box_unmatched_load_12}_CUST'].replace('n', np.nan)
             algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'].round(0).astype(str).str[:-2]
             algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'] = algrtm_output_df[f'{select_box_unmatched_load_12}_UNMTCH'].replace('n', np.nan)
 
         elif select_box_unmatched_load_main:
-            algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_MTCH', 
+            algrtm_output_df = algrtm_output_df[[f'{select_box_unmatched_load_main}_CUST', 
                                                     f'{select_box_unmatched_load_main}_UNMTCH']]
 
         
@@ -507,8 +524,8 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
 
 
         # Col 3 text
-        col_threshold_left.subheader(f'Perform Matching at Threshold: {selectbox_threshold}')
-        col_threshold_left.markdown(f'Optimal Threshold: {best_threshold} (based on number of matches vs quality)')
+        col_threshold_left.header(f'Perform Matching at Threshold: {selectbox_threshold}')
+        col_threshold_left.markdown(f'Optimal Threshold= {best_threshold} (based on number of matches vs quality)')
         col5.subheader(' ')
 
         #latest_iteration = st.empty()
@@ -567,51 +584,51 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
 
         #y = np.array([unmtch_name_col.nunique(), len(unmtch_name_col) - unmtch_name_col.nunique()])
         #customer_matches = pd.DataFrame({"labels" : ['Only one match','More than one match'],"values":[len(df_final[f'{select_box_unmatched_load_main}_MTCH'].unique()), len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_MTCH'].unique()) ]})
-        y1= np.array([len(df_final[f'{select_box_unmatched_load_main}_MTCH'].unique()), len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_MTCH'].unique()) ]) 
-        labels1= ['Only one match','More than one match']
+        # y1= np.array([len(df_final[f'{select_box_unmatched_load_main}_MTCH'].unique()), len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_MTCH'].unique()) ]) 
+        # labels1= ['Only one match','More than one match']
 
-           #len(df_final[f'{select_box_unmatched_load_main}_MTCH'].unique()) -> Only one match
-           #len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_MTCH'].unique()) -> more than one match
-        mycolors = [plot_blue_colour, primaryColor]
-        explode = (0, 0)
+        #    #len(df_final[f'{select_box_unmatched_load_main}_MTCH'].unique()) -> Only one match
+        #    #len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_MTCH'].unique()) -> more than one match
+        # mycolors = [plot_blue_colour, primaryColor]
+        # explode = (0, 0)
     
-        #fig1, ax1 = plt.subplots()
-        fig1, ax1 = plt.subplots(figsize=(6,6))
-        fig1.patch.set_facecolor(backgroundColor)
+        # #fig1, ax1 = plt.subplots()
+        # fig1, ax1 = plt.subplots(figsize=(6,6))
+        # fig1.patch.set_facecolor(backgroundColor)
     
-        ax1.pie(y1, autopct=lambda x: '{:.0f}'.format(x*y1.sum()/100), explode=explode, labels=None,
-            shadow=False, startangle=90, colors=mycolors, textprops={'color':"w",'fontsize': 14} ) 
-        ax1.axis('equal')
-        plt.title('MATCH', color=textColor, y=1.1, fontsize=16)
-        plt.legend(labels1, loc='lower left', bbox_to_anchor=(0.5, -0.08))
-        #plt.figure(figsize=(10,10))
+        # ax1.pie(y1, autopct=lambda x: '{:.0f}'.format(x*y1.sum()/100), explode=explode, labels=None,
+        #     shadow=False, startangle=90, colors=mycolors, textprops={'color':"w",'fontsize': 14} ) 
+        # ax1.axis('equal')
+        # plt.title('Customer', color=textColor, y=1.1, fontsize=16)
+        # plt.legend(labels1, loc='lower left', bbox_to_anchor=(0.5, -0.08))
+        # #plt.figure(figsize=(10,10))
 
-        buf1 = BytesIO()
-        fig1.savefig(buf1, format="png")
+        # buf1 = BytesIO()
+        # fig1.savefig(buf1, format="png")
 
-        #y = np.array([unmtch_name_col.nunique(), len(unmtch_name_col) - unmtch_name_col.nunique()])
-        #unmatched_matches = pd.DataFrame({"labels" : ['Only one match','More than one match'],"values":[len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique()), len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique())]})
-        y2=np.array([len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique()), len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique())])
-        labels2=['Only one match','More than one match']
+        # #y = np.array([unmtch_name_col.nunique(), len(unmtch_name_col) - unmtch_name_col.nunique()])
+        # #unmatched_matches = pd.DataFrame({"labels" : ['Only one match','More than one match'],"values":[len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique()), len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique())]})
+        # y2=np.array([len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique()), len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique())])
+        # labels2=['Only one match','More than one match']
 
-           #len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique()) -> Only one match
-           #len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique()) -> more than one match
-        mycolors = [plot_blue_colour, primaryColor]
-        explode = (0, 0)
+        #    #len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique()) -> Only one match
+        #    #len(df_final)- len(df_final[f'{select_box_unmatched_load_main}_UNMTCH'].unique()) -> more than one match
+        # mycolors = [plot_blue_colour, primaryColor]
+        # explode = (0, 0)
     
-        #fig2, ax2 = plt.subplots()
-        fig2, ax2 = plt.subplots(figsize=(6,6))
-        fig2.patch.set_facecolor(backgroundColor)
+        # #fig2, ax2 = plt.subplots()
+        # fig2, ax2 = plt.subplots(figsize=(6,6))
+        # fig2.patch.set_facecolor(backgroundColor)
     
-        ax2.pie(y2, autopct=lambda x: '{:.0f}'.format(x*y2.sum()/100), explode=explode, labels=None,
-            shadow=False, startangle=90, colors=mycolors, textprops={'color':"w",'fontsize': 14}, radius=1800)
-        ax2.axis('equal')
-        plt.title('UNMATCH', color=textColor, y=1.1, fontsize=16)
-        plt.legend(labels2, loc='lower left', bbox_to_anchor=(0.5, -0.08))
-        #plt.figure(figsize=(10,10))
+        # ax2.pie(y2, autopct=lambda x: '{:.0f}'.format(x*y2.sum()/100), explode=explode, labels=None,
+        #     shadow=False, startangle=90, colors=mycolors, textprops={'color':"w",'fontsize': 14}, radius=1800)
+        # ax2.axis('equal')
+        # plt.title('Unmatched', color=textColor, y=1.1, fontsize=16)
+        # plt.legend(labels2, loc='lower left', bbox_to_anchor=(0.5, -0.08))
+        # #plt.figure(figsize=(10,10))
     
-        buf2 = BytesIO()
-        fig2.savefig(buf2, format="png")
+        # buf2 = BytesIO()
+        # fig2.savefig(buf2, format="png")
 
         colp1.image(buf1)
         colp2.image(buf2)
@@ -624,19 +641,19 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
         with colp3:
             st.write('')
 
-        st.subheader('Dataset Matched Summary Table​')
+        st.header('Matched Summary Table​')
         st.dataframe(data=algrtm_output_df.head(100), use_container_width=True)
 
-        st.subheader('Store Performance​')
+        st.header('Store Performance​')
 
         #----- Col 7 and Col 8--------
         col7, col8 = st.columns([2, 2])
         #store_table_title = '<p style="font-family:sans-serif;color:#30343F; font-size: 19px; text-align: left;">Store Statistics Table</p>'
         #col7.markdown(store_table_title, unsafe_allow_html=True)
-        col7.subheader('Store Statistics Table')
+        col7.write('Store Statistics Table')
         #violin_chart_title = '<p style="font-family:sans-serif;color:#30343F; font-size: 19px; text-align: left;">Store Statistics Distribution</p>'
         #col8.markdown(violin_chart_title, unsafe_allow_html=True)
-        col8.subheader("Store Statistics Distribution")
+        col8.write("Store Statistics Distribution")
 
         df_gb_store_mtch['STORE'] = df_gb_store_mtch['STORE'].round(0).astype(str).str[:-2]
         df_gb_store_mtch['STORE'] = df_gb_store_mtch['STORE'].replace('n', np.nan)
@@ -701,16 +718,16 @@ if st.session_state['valid_flag']:
         merged_df_cu = pd.merge(st.session_state.customer_df_com_cols, customer_city_count, on='STORE_CITY', how='inner')
 
         ctomer_name_col = st.session_state.customer_df_com_cols.MSRNAME
-        customer_unique = pd.DataFrame({"labels" : ['Known unique customers', 'Duplicates'],"values":[ctomer_name_col.nunique(), len(ctomer_name_col) - ctomer_name_col.nunique()]})
+        customer_unique = pd.DataFrame({"labels" : ['Unique Records', 'Duplicate Records'],"values":[ctomer_name_col.nunique(), len(ctomer_name_col) - ctomer_name_col.nunique()]})
 
         unmtch_name_col = st.session_state.unmatched_df_com_cols.MSRNAME
-        unmatched_unique = pd.DataFrame({"labels" : ['Unmatched unique customers', 'Duplicates'],"values":[unmtch_name_col.nunique(), len(unmtch_name_col) - unmtch_name_col.nunique()]})
+        unmatched_unique = pd.DataFrame({"labels" : ['Unique Records', 'Duplicate Records'],"values":[unmtch_name_col.nunique(), len(unmtch_name_col) - unmtch_name_col.nunique()]})
 
         #merged_unmatched['count'].idxmax()
         #merged_customer['count'].idxmax()
         cmap = {
-        'Unmatched unique customers':  '#0810A6',
-        'Duplicates': '#BF2A7C',
+        'Unique Records':  '#0810A6',
+        'Duplicate Records': '#BF2A7C',
     }
         
         #na_unmatched=alt.Chart(merged_unmatched1).mark_bar(size=20).encode(
@@ -727,27 +744,29 @@ if st.session_state['valid_flag']:
         radius=alt.Radius("counts", scale=alt.Scale(type="sqrt", zero=True, rangeMin=20)),
         color=alt.Color ("STORE_CITY:N" ,title="Cities"),
         order= alt.Order("counts:Q", sort="ascending")
-        )
+        )#.properties()
+        
         c1 = base.mark_arc(innerRadius=20, stroke="#fff")
         c2 = base.mark_text(radiusOffset=10).encode(text="counts:Q")
+        
 
         #Stack bar with city, Numshop
         bars = alt.Chart(merged_df_un.dropna(), title="Distribution of num_shop by top 10 cities").mark_bar().encode(
         x=alt.X('count()', stack='zero',title=None),
         y=alt.Y('STORE_CITY:N',title=None),
         color=alt.Color('NUM_SHOP:N', bin=alt.Bin(maxbins=5), scale=alt.Scale(scheme='plasma'))
-            )
+            ).configure_title(align='center', anchor='middle', orient ='top')
         
         #Mini pie chart 1
-        base1 = alt.Chart(unmatched_unique).encode(
+        base1 = alt.Chart(unmatched_unique, title='Duplicate records overview').encode(
         theta= alt.Theta("values:Q",stack=True),
 #         color = alt.Color('labels:N' ,title=None)#, scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
         color = alt.Color('labels:N' ,title=None,scale=alt.Scale(scheme="plasma")) ,
-        )
+        ).properties()
 
         pie = base1.mark_arc(outerRadius=120)
         text = base1.mark_text(radius=140, size=20).encode(text="values:N")
-
+        
         
 
         #na_unmatched = na_graphs(null_df_unmatched, name='unmatched')
@@ -757,10 +776,12 @@ if st.session_state['valid_flag']:
             #notnull_df_unmatched
             #merged_unmatched
             #merged_unmatched1
-            st.subheader('Unmatched dataset')
-            st.altair_chart((c1+c2), use_container_width=True)
+            # st.header('')
+            col3.header('Data Insights')
+            st.subheader('Unmatched Dataset')
+            st.altair_chart((c1+c2).configure_title(align='center', anchor='middle', orient='top'), use_container_width=True)
             st.altair_chart((bars), use_container_width=True)
-            st.altair_chart((pie+text), use_container_width=True)
+            st.altair_chart((pie+text).configure_title(align='center', anchor='middle', orient='top'), use_container_width=True)
             #pie chart
             st.write('')
 
@@ -784,21 +805,23 @@ if st.session_state['valid_flag']:
         c2_c = base_c.mark_text(radiusOffset=10).encode(text="counts:Q")
 
         cmap = {
-        'Known unique customers': '#0810A6',
-        'Duplicates':  '#BF2A7C',
+        'Unique Records': '#0810A6',
+        'Duplicate Records':  '#BF2A7C',
     }
         #Stack bar with city, Numshop
         bars_2 = alt.Chart(merged_df_cu.dropna(), title="Distribution of num_shop by top 10 cities").mark_bar().encode(
         x=alt.X('count()', stack='zero',title=None),
         y=alt.Y('STORE_CITY:N',title=None),
         color=alt.Color('NUM_SHOP:N', bin=alt.Bin(maxbins=5), scale=alt.Scale(scheme='plasma'))
-            )
+            ).configure_title(align='center', anchor='middle', orient='top')
         
         #Mini pie chart 2
-        base_2 = alt.Chart(customer_unique).encode(
+       
+        base_2 = alt.Chart(customer_unique,title="Duplicate records overview").encode(
         theta= alt.Theta("values:Q", stack=True),
 #         color= alt.Color('labels:N',title=None)#,scale=alt.Scale(domain=list(cmap.keys()), range=list(cmap.values()))) ,
         color= alt.Color('labels:N',title=None,scale=alt.Scale(scheme="plasma")) ,
+
         )
 
         pie_2 = base_2.mark_arc(outerRadius=120)
@@ -806,17 +829,22 @@ if st.session_state['valid_flag']:
 
     
         
-
+        col4.write('')
+        col4.write('')
+        col4.write('')
+        col4.write('')
+        col4.write('')
         with col4:
             #st.altair_chart(na_customer, use_container_width=False)
             #null_df_customers
             #notnull_df_customers
             #merged_customer
             #merged_customer1
-            st.subheader('Customer dataset')
-            st.altair_chart((c1_c+c2_c), use_container_width=True)
+
+            st.subheader('Customer Dataset')
+            st.altair_chart((c1_c+c2_c).configure_title(align='center', anchor='middle', orient='top'), use_container_width=True)
             st.altair_chart((bars_2), use_container_width=True)
-            st.altair_chart((pie_2+text_2), use_container_width=True)
+            st.altair_chart((pie_2+text_2).configure_title(align='center', anchor='middle', orient='top'), use_container_width=True)
             st.write('')
         
         merged_customer_df  = merged_customer.assign(df=np.full(len(merged_customer), 'Customer'))
@@ -899,5 +927,7 @@ if st.session_state['valid_flag']:
          pass
 else:
     col3.write('')
+
+
 
 

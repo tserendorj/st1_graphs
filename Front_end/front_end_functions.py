@@ -82,18 +82,18 @@ def threshold_match_tbl(threshold_possibilities,count_num_mtch ):
 
 def df_store_match (df_final,select_box_unmatched_load_main):
     df_copy = df_final.copy()
-    df_copy['100_match'] = np.where (df_final[f'{select_box_unmatched_load_main}_MTCH'] == df_final[f'{select_box_unmatched_load_main}_UNMTCH'], 1, 0)
-    df_copy['100_match_address'] = np.where(df_copy.STORE_CITY_MTCH == df_copy.STORE_CITY_UNMTCH, 1, 0)
+    df_copy['100_match'] = np.where (df_final[f'{select_box_unmatched_load_main}_CUST'] == df_final[f'{select_box_unmatched_load_main}_UNMTCH'], 1, 0)
+    df_copy['100_match_address'] = np.where(df_copy.STORE_CITY_CUST == df_copy.STORE_CITY_UNMTCH, 1, 0)
 
     df_gb_store_mtch = pd.DataFrame()
     # Group by Store --- Name matching
-    df_gb_store_mtch['TOTAL_CUSTOMERS'] = df_copy.groupby('STORE_MTCH')['STORE_MTCH'].count()
-    df_gb_store_mtch['100%_MATCH'] =df_copy.groupby('STORE_MTCH')['100_match'].sum()
+    df_gb_store_mtch['TOTAL_CUSTOMERS'] = df_copy.groupby('STORE_CUST')['STORE_CUST'].count()
+    df_gb_store_mtch['100%_MATCH'] =df_copy.groupby('STORE_CUST')['100_match'].sum()
     df_gb_store_mtch['MISSPELLING'] =  df_gb_store_mtch['TOTAL_CUSTOMERS']  - df_gb_store_mtch['100%_MATCH']
     df_gb_store_mtch['MISSPELLING_%'] =  np.round(df_gb_store_mtch['MISSPELLING'] * 100 / df_gb_store_mtch['TOTAL_CUSTOMERS'], 2)
 
     df_gb_store_mtch = df_gb_store_mtch.sort_values('MISSPELLING_%', ascending=False)
-    df_gb_store_mtch = df_gb_store_mtch.reset_index().rename(columns={'STORE_MTCH': 'STORE'})
+    df_gb_store_mtch = df_gb_store_mtch.reset_index().rename(columns={'STORE_CUST': 'STORE'})
 
     return df_copy, df_gb_store_mtch
 
@@ -102,12 +102,12 @@ def venn_diagram (unmatched_df_count,matched_df_count,match_count ):
     fig, ax = plt.subplots()
     fig.patch.set_facecolor(backgroundColor)
 
-    plt.title('Matching', color = textColor, fontsize=10)
+    plt.title('Records Match', color = textColor, fontsize=9)
     plt.figure(figsize=(10,10))
 
     total= 100.0
     v = venn2(subsets=(unmatched_df_count, matched_df_count, match_count), 
-                    set_labels=("Unmatched Records", "Customer Database"), 
+                    set_labels=("Unmatched Records", "Customer Records"), 
                     # subset_label_formatter=lambda x: f"{(np.round(x/1000000, 1))}M", #uncomment if you want to round you len(df) to Millions
                     subset_label_formatter=lambda x: f"{(np.round(x/1000, 1))}K",
                     ax=ax,set_colors=(primaryColor, plot_blue_colour), 
@@ -130,7 +130,7 @@ def venn_diagram (unmatched_df_count,matched_df_count,match_count ):
 
 def mini_pie_charts(df_final, select_box_unmatched_load_main, unmtch_name_col, ctomer_name_col ):
      
-    df_final['cmplete_name_match'] = np.where(df_final[f'{select_box_unmatched_load_main}_MTCH'] == df_final[f'{select_box_unmatched_load_main}_UNMTCH'], 1, 0)
+    df_final['cmplete_name_match'] = np.where(df_final[f'{select_box_unmatched_load_main}_CUST'] == df_final[f'{select_box_unmatched_load_main}_UNMTCH'], 1, 0)
 
     cmplete_name_match= len(df_final[df_final['cmplete_name_match']==1])
     mtch_output_len = len(df_final)
@@ -149,7 +149,7 @@ def mini_pie_charts(df_final, select_box_unmatched_load_main, unmtch_name_col, c
     ax1.pie(y, autopct=lambda x: '{:.0f}'.format(x*y.sum()/100), explode=explode, labels=None,
             shadow=False, startangle=90, colors=mycolors, textprops={'color':"w",'fontsize': 14} ) 
     ax1.axis('equal')
-    plt.title('Unmatched dataset', color=textColor, y=1.1, fontsize=16)
+    plt.title('Unmatched', color=textColor, y=1.1, fontsize=16)
     plt.legend(labels, loc='lower left', bbox_to_anchor=(0.5, -0.08))
         #plt.figure(figsize=(10,10))
 
@@ -172,7 +172,7 @@ def mini_pie_charts(df_final, select_box_unmatched_load_main, unmtch_name_col, c
     ax2.pie(y, autopct=lambda x: '{:.0f}'.format(x*y.sum()/100), explode=explode, labels=None,
             shadow=False, startangle=90, colors=mycolors, textprops={'color':"w",'fontsize': 14}, radius=1800)
     ax2.axis('equal')
-    plt.title('Customer dataset', color=textColor, y=1.1, fontsize=16)
+    plt.title('Customer', color=textColor, y=1.1, fontsize=16)
     plt.legend(labels, loc='lower left', bbox_to_anchor=(0.5, -0.08))
         #plt.figure(figsize=(10,10))
     
@@ -196,7 +196,7 @@ def mini_pie_charts(df_final, select_box_unmatched_load_main, unmtch_name_col, c
     ax3.pie(y, autopct=lambda x: '{:.0f}'.format(x*y.sum()/100), explode=explode, labels=None,
             shadow=False, startangle=90, colors=mycolors, textprops={'color':"w",'fontsize': 14},  radius=1800)
     ax3.axis('equal')
-    plt.title('Threshold dataset', color=textColor, y=1.1, fontsize=16)
+    plt.title('Matched', color=textColor, y=1.1, fontsize=16)
     plt.legend(labels, loc='lower left', bbox_to_anchor=(0.5, -0.08))
         #plt.figure(figsize=(10,10))
 
@@ -208,7 +208,7 @@ def mini_pie_charts(df_final, select_box_unmatched_load_main, unmtch_name_col, c
 
 def violin_graph (df_gb_store_mtch):
     violin_plot = df_gb_store_mtch[['TOTAL_CUSTOMERS', 'MISSPELLING']]
-    ax_violin_plot = plt.figure()
+    ax_violin_plot = plt.figure(figsize=(6.4,4.6))    #default = 6.4 wide and 4.8 high
     ax_violin_plot.patch.set_facecolor(backgroundColor)
     ax = ax_violin_plot.add_axes([0,0,1,1])
     ax.set_facecolor(backgroundColor)
@@ -225,6 +225,7 @@ def violin_graph (df_gb_store_mtch):
     
     plt.xlabel("Total Customers                                      Misspelling    ",fontsize=14,color=textColor)
     plt.ylabel("# Customers per store",  color=textColor, rotation='vertical', loc ='center',fontsize=14)
+    # plt.title('Store Statistics Distribution' ,color = textColor, fontsize=10)
     
     ax.spines['bottom'].set_color('lightgrey')
     ax.spines['top'].set_color('lightgrey')
