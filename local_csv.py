@@ -197,7 +197,7 @@ if (unmatched_file_valid_flag == True) and (customer_file_valid_flag ==True):
     if x > 0:
         st.sidebar.markdown(f'<h1 style="color:{tertiaryColor};font-size:16px;">{f"The operation will take {datetime.timedelta(seconds=x)}"}</h1>', unsafe_allow_html=True)
     else:
-        st.sidebar.markdown(f'<h1 style="color:{tertiaryColor};font-size:16px;">{f"The operation will take few hours"}</h1>', unsafe_allow_html=True)
+        st.sidebar.markdown(f'<h1 style="color:{tertiaryColor};font-size:16px;">{f"The operation will take less than a minute"}</h1>', unsafe_allow_html=True)
     
 
 
@@ -308,8 +308,8 @@ zeta_logo = Image.open('ZETA_BIG-99e027c92.png') #blue logo
 col2.image(zeta_logo)
 
 ## Header
-col1.title("Zeta Customer Matcher")
-"""This app demonstrates Customers Probabilistic Matching Project"""
+col1.title("Probabilistic Matching")
+"""Record Linking Using Algorithmic Methods"""
 
 
 # Creating columns 3 and 4
@@ -341,7 +341,7 @@ col_compare_alg = 1
 
 # Display features if data is valid and match button is clicked
 if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
-    if (select_box_unmatched_load_11 == select_box_unmatched_load_12 )and ((select_box_unmatched_load_11 != '') or select_box_unmatched_load_12):
+    if (select_box_unmatched_load_11 == select_box_unmatched_load_12 ) and ((select_box_unmatched_load_11 != '') or select_box_unmatched_load_12):
         st.error('Please, select two different extra columns to perform match')
     else:
         if select_box_unmatched_load_main and (select_box_unmatched_load_11 or select_box_unmatched_load_12):
