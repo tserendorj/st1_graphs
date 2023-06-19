@@ -63,31 +63,39 @@ file_options = ['Local file', 'Snowflake']
 
 file = st.sidebar.radio('Data upload', file_options)
 
-## Unmatched file: this are unknown customers 
-unmatched_file = st.sidebar.file_uploader('Unmatched Dataset', type='csv', help='Dataset without email address')
+if file == 'Snowflake':
+    unmatched_file_valid_flag = False
+    unmatched = st.sidebar.text_input('Enter your unmatched table name', help='Please write the name of the table you want to use, from the DEMO_DB database and PUBLIC schema.')
 
-unmatched_file_valid_flag = False
-if unmatched_file is not None:
-    # Check MIME type of the uploaded file
-    if  unmatched_file.name == "unmatched_data.csv":
-        unmatched_df = pd.read_csv(unmatched_file)
-        unmatched_file_valid_flag = True
-        st.sidebar.success('Success')
-    else:
-        st.sidebar.error('Error: please, re-upload file called unmatched_data.csv')
+    #Customer table   
+    customer_file_valid_flag = False
+    customer = st.sidebar.text_input('Enter your customer table name', help='Please write the name of the table you want to use, from the DEMO_DB database and PUBLIC schema.')
+else:
+    ## Unmatched file: this are unknown customers 
+    unmatched_file = st.sidebar.file_uploader('Unmatched Dataset', type='csv', help='Dataset without email address')
 
-## Customer file: this are known customers (a.k.a customer databse with PII)
-customer_file = st.sidebar.file_uploader("Customer Dataset", type='csv', help='Dataset containing email address')
+    unmatched_file_valid_flag = False
+    if unmatched_file is not None:
+        # Check MIME type of the uploaded file
+        if  unmatched_file.name == "unmatched_data.csv":
+            unmatched_df = pd.read_csv(unmatched_file)
+            unmatched_file_valid_flag = True
+            st.sidebar.success('Success')
+        else:
+            st.sidebar.error('Error: please, re-upload file called unmatched_data.csv')
 
-customer_file_valid_flag = False
-if customer_file is not None:
-    # Check MIME type of the uploaded file
-    if  customer_file.name == "customer_data.csv":
-        customer_df = pd.read_csv(customer_file)
-        customer_file_valid_flag = True
-        st.sidebar.success('Success')
-    else:
-        st.sidebar.error('Error: please, re-upload file called customer_data.csv')
+    ## Customer file: this are known customers (a.k.a customer databse with PII)
+    customer_file = st.sidebar.file_uploader("Customer Dataset", type='csv', help='Dataset containing email address')
+
+    customer_file_valid_flag = False
+    if customer_file is not None:
+        # Check MIME type of the uploaded file
+        if  customer_file.name == "customer_data.csv":
+            customer_df = pd.read_csv(customer_file)
+            customer_file_valid_flag = True
+            st.sidebar.success('Success')
+        else:
+            st.sidebar.error('Error: please, re-upload file called customer_data.csv')
 
 
 
@@ -278,19 +286,20 @@ match_button = st.sidebar.button("""Apply Match""", help='Apply match to your da
 
 st.sidebar.text(" ")
 
-st.sidebar.title("Data Storage")
-if 'dataframe_csv' not in st.session_state:
-    st.session_state.dataframe_csv = pd.DataFrame()
-csv=st.session_state.dataframe_csv.to_csv().encode('utf-8')
-today = datetime.date.today()
-today_date = today.strftime('%m%d%Y%H%M%S')
-csv_name='prob_matching_df_' + today_date
-st.sidebar.download_button(
-    label="Download data as CSV",
-    data=csv,
-    file_name=csv_name,
-    mime='text/csv',
-    )
+# st.sidebar.title("Data Storage")
+# if 'dataframe_csv' not in st.session_state:
+#     st.session_state.dataframe_csv = pd.DataFrame()
+# csv=st.session_state.dataframe_csv.to_csv().encode('utf-8')
+# today = datetime.date.today()
+# today_date = today.strftime('%m%d%Y%H%M%S')
+# csv_name='prob_matching_df_' + today_date + 'csv'
+# st.sidebar.download_button(
+#     label="Download data as CSV",
+#     data=csv,
+#     file_name=csv_name,
+#     mime='text/csv',
+#     )
+
 
 
 # -----------------------------------------------------------------------------------------------
@@ -643,6 +652,7 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
 
         st.header('Matched Summary Table​')
         st.dataframe(data=algrtm_output_df.head(100), use_container_width=True)
+        st.session_state.dataframe_csv = algrtm_output_df.copy()
 
         st.header('Store Performance​')
 
@@ -928,6 +938,18 @@ if st.session_state['valid_flag']:
 else:
     col3.write('')
 
-
+st.sidebar.title("Data Storage")
+if 'dataframe_csv' not in st.session_state:
+    st.session_state.dataframe_csv = pd.DataFrame()
+csv=st.session_state.dataframe_csv.reset_index().drop('index',axis=1).to_csv(index=False).encode('utf-8')
+today = datetime.date.today()
+today_date = today.strftime('%m%d%Y%H%M%S')
+csv_name='prob_matching_df_' + today_date + '.csv'
+st.sidebar.download_button(
+    label="Download data as CSV",
+    data=csv,
+    file_name=csv_name,
+    mime='text/csv',
+    )
 
 
