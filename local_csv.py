@@ -439,6 +439,10 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
         latest_iteration.text('Calculating number of matches...')
 
         #merge matching
+        # unmatched_df=unmatched_df[unmatched_df[select_box_unmatched_load_11].isin(customer_df[select_box_unmatched_load_11])]
+        # customer_df=customer_df[customer_df[select_box_unmatched_load_11].isin(unmatched_df[select_box_unmatched_load_11])] 
+        # unmatched_df=unmatched_df[unmatched_df[select_box_unmatched_load_12].isin(customer_df[select_box_unmatched_load_12])]
+        # customer_df=customer_df[customer_df[select_box_unmatched_load_12].isin(unmatched_df[select_box_unmatched_load_12])] 
         df_final = merge_dataframes(predictions, unmatched_df, customer_df)
 
         # SECOND RUN OF THE ALGORITHM FOR ALL THE THRESHOLD
@@ -651,8 +655,20 @@ if match_button and unmatched_file_valid_flag and customer_file_valid_flag:
             st.write('')
 
         st.header('Matched Summary Table​')
-        st.dataframe(data=algrtm_output_df.head(100), use_container_width=True)
+        # algrtm_output_df
+        # algrtm_output_df[]
+        
+        if select_box_unmatched_load_11 and select_box_unmatched_load_12:
+            algrtm_output_df=algrtm_output_df[(algrtm_output_df[select_box_unmatched_load_11+'_CUST']==algrtm_output_df[select_box_unmatched_load_11+'_UNMTCH']) & (algrtm_output_df[select_box_unmatched_load_12+'_CUST']==algrtm_output_df[select_box_unmatched_load_12+'_UNMTCH'])]
+        elif select_box_unmatched_load_11 :
+            algrtm_output_df=algrtm_output_df[(algrtm_output_df[select_box_unmatched_load_11+'_CUST']==algrtm_output_df[select_box_unmatched_load_11+'_UNMTCH'])]
+        elif select_box_unmatched_load_12 :
+            algrtm_output_df=algrtm_output_df[(algrtm_output_df[select_box_unmatched_load_12+'_CUST']==algrtm_output_df[select_box_unmatched_load_12+'_UNMTCH'])]
+    
+
         st.session_state.dataframe_csv = algrtm_output_df.copy()
+        st.dataframe(data=algrtm_output_df.head(100), use_container_width=True)
+        
 
         st.header('Store Performance​')
 
