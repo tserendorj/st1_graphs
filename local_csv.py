@@ -317,8 +317,8 @@ zeta_logo = Image.open('ZETA_BIG-99e027c92.png') #blue logo
 col2.image(zeta_logo)
 
 ## Header
-col1.title("Probabilistic Matching")
-"""Record Linking Using Algorithmic Methods"""
+col1.title("Zeta Customer Matcher")
+"""This app demonstrates Customers Probabilistic Matching"""
 
 
 # Creating columns 3 and 4
