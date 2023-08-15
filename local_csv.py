@@ -43,7 +43,7 @@ position: fixed;left: 0;bottom: 0;width: 100%;background-color: white;color: bla
 }
 </style>
 <div class="footer">
-<p>(c) 2023 Zeta Global, Dev Version 2.4, GDSA</p>
+<p>(c) 2023 Zeta Global, Dev Version 1.4, GDSA</p>
 </div>
 """
 st.markdown(footer,unsafe_allow_html=True)
